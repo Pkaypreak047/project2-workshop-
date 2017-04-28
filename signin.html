@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  </head>
+  <body>
+  <style type="text/css">
+          body {
+              background: url("http://www.myspacelayoutsupport.com/myspace-backgrounds/images/uh8.jpg") no-repeat center center fixed;) no-repeat center center fixed;
+              background-size:cover;
+          }
+          </style>
+    <div class="container">
+      <img class="responsive-img" style="width: 150px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/User_with_smile.svg/2000px-User_with_smile.svg.png" />
+    <h1>Sign In</h1>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sign in to the system</h3>
+      </div>
+      <div class="panel-body">
+        <form class="sign" action="#" method="post" id="contactform">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="UngPkay">
+            <p class="help-block">Text username here.</p>
+          </div>
+          <div class="form-group">
+            <label for="passoword">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="xxxxx">
+            <p class="help-block">Text password here.</p>
+          </div>
+          <div class="form-group">
+            <button type="button" id="signin" class="btn btn-primary" name="button">Sign In</button>
+          </div>
+        </form>
+      </div>
+      <div class="panel-footer"></div>
+    </div>
+    <div id="err" style="display:none" class="alert alert-danger alert-dismissable fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+      <strong>Incorrect username or password</strong>
+      Please check your password.
+    </div>
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js" charset="utf-8"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+
+          $('#contactform').validate({
+              rules: {
+                  username: {
+                    minlength: 8,
+                    maxlength: 15,
+                      required: true
+                  },
+                  password: {
+                      minlength: 3,
+                      maxlength: 15,
+                      required: true
+
+                  },
+
+
+
+              },
+              highlight: function(element) {
+                  $(element).closest('.form-group').addClass('has-error');
+              },
+              unhighlight: function(element) {
+                  $(element).closest('.form-group').removeClass('has-error');
+              },
+              errorElement: 'span',
+              errorClass: 'help-block',
+              errorPlacement: function(error, element) {
+                  if(element.parent('.input-group').length) {
+                      error.insertAfter(element.parent());
+                  } else {
+                      error.insertAfter(element);
+                  }
+              }
+          });
+          $('#signin').click(function() {
+
+              if($('#contactform').valid() == false){
+                return;
+              }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+      $("#signup").click(function() {
+          //Redirect to Signup page
+          window.location.href = "Sign_Up.html";
+      });
+      $("#signin").click(function() {
+        //Set a url of password verification api
+        var url = "http://membershipwebapi977290.azurewebsites.net/api/Members/signin?";
+        //Create a url contains username & password as querystring parameters
+        url += "username=" + $("#username").val();
+        url += "&password=" + $("#password").val();
+        console.log(url);
+        //Call the REST Api to verify username/password
+        $.get(url, function(data, status) {
+          console.log(data);
+          //Check if username & password are corrected
+          if(data.Status == true){
+            //Goto User's info page
+            window.location.href = "userinfo.html?id=" + data.CurrentUser.Id;
+          }else{
+            //Show error message
+            $("#err").show();
+          }
+        });
+      });
+    </script>
+
+
+
+
+  </body>
+</html>
